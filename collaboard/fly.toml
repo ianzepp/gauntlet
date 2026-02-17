@@ -1,33 +1,23 @@
-app = "collaboard"
-primary_region = "dfw"
+# fly.toml app configuration file generated for collaboard on 2026-02-17T14:12:50Z
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'collaboard'
+primary_region = 'iad'
 
 [build]
 
-[deploy]
-  release_command = "collaboard --migrate-only"
-
 [http_service]
-  internal_port = 3000
+  internal_port = 8080
   force_https = true
+  auto_stop_machines = 'stop'
   auto_start_machines = true
-  auto_stop_machines = "off"
-  # Keep one hot machine because board realtime state is process-local today.
-  min_machines_running = 1
+  min_machines_running = 0
+  processes = ['app']
 
-  [http_service.concurrency]
-    type = "connections"
-    soft_limit = 200
-    hard_limit = 250
-
-  [[http_service.checks]]
-    grace_period = "10s"
-    interval = "15s"
-    method = "GET"
-    timeout = "2s"
-    path = "/healthz"
-
-[env]
-  PORT = "3000"
-  HOST = "0.0.0.0"
-  STATIC_DIR = "/app/client/dist"
-  COOKIE_SECURE = "true"
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1
+  memory_mb = 256
