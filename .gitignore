@@ -1,1 +1,4 @@
 .worktrees/
+
+# Claude Code local artifacts
+.claude/
